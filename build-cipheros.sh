@@ -100,7 +100,6 @@ lb config noauto \
     --mirror-binary http://deb.debian.org/debian/ \
     --mirror-binary-security http://security.debian.org/debian-security/ \
     --security true \
-    --updates true \
     --backports true \
     --bootloader grub-efi \
     --binary-images iso-hybrid \
