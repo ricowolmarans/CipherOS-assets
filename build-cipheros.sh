@@ -60,6 +60,19 @@ apt-get install -y \
 
 success "Dependencies installed (live-build $(lb --version))"
 
+# ── Patch known live-build bug: lb_chroot_linux-image fetches the wrong
+#    Contents-<arch>.gz path (missing /main/) causing a 404 on bookworm+ ──────
+LB_SCRIPT="/usr/lib/live/build/lb_chroot_linux-image"
+if [[ -f "$LB_SCRIPT" ]] && grep -q 'Contents-\${LB_ARCHITECTURES}.gz' "$LB_SCRIPT" 2>/dev/null; then
+    log "Patching known live-build bug in lb_chroot_linux-image..."
+    cp "$LB_SCRIPT" "${LB_SCRIPT}.bak" 2>>"$LOG_FILE" || true
+    sed -i 's#dists/${LB_PARENT_DISTRIBUTION}/Contents-${LB_ARCHITECTURES}.gz#dists/${LB_PARENT_DISTRIBUTION}/main/Contents-${LB_ARCHITECTURES}.gz#g' \
+        "$LB_SCRIPT" 2>>"$LOG_FILE" || warn "Patch failed — build may hit the Contents-amd64.gz 404 bug"
+    success "live-build patched"
+else
+    log "live-build script already patched or pattern not found — skipping"
+fi
+
 # ── PHASE 2: PROJECT STRUCTURE ────────────────────────────────────────────────
 header "📁 PHASE 2 — Project Structure"
 
