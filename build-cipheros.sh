@@ -97,8 +97,7 @@ lb config noauto \
     --mirror-bootstrap http://deb.debian.org/debian/ \
     --mirror-chroot http://deb.debian.org/debian/ \
     --mirror-binary http://deb.debian.org/debian/ \
-    --mirror-binary-security http://security.debian.org/debian-security/ \
-    --security true \
+    --security false \
     --backports false \
     --bootloader grub-efi \
     --binary-images iso-hybrid \
@@ -1375,7 +1374,12 @@ cat > config/hooks/live/0100-cipheros-setup.hook.chroot << 'HOOKEOF'
 set -euo pipefail
 echo "🔐 CipherOS Debian Hook — Starting..."
 
-# ── Add non-free and contrib (already in sources via live-build config)
+# ── Add Debian security repo manually (live-build's --security flag
+#    generates the wrong suite name on some versions, so we set it directly) ──
+cat > /etc/apt/sources.list.d/security.list << 'EOF'
+deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+EOF
+
 apt-get update -qq
 
 # ── 32-bit for Wine/Steam ─────────────────────────────────────────────────────
