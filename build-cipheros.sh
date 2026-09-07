@@ -136,6 +136,8 @@ fi
 
 WALLPAPER_DEST="config/includes.chroot/usr/share/wallpapers/CipherOS/contents/images"
 LOGO_DEST="config/includes.chroot/etc/calamares/branding/cipheros"
+mkdir -p "$WALLPAPER_DEST"
+mkdir -p "$LOGO_DEST"
 
 # Wallpapers
 if [[ -d "$ASSETS_DIR/wallpapers" ]] && \
