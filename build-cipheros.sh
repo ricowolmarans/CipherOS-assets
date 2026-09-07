@@ -63,17 +63,16 @@ success "Dependencies installed (live-build $(lb --version))"
 # ── PHASE 2: PROJECT STRUCTURE ────────────────────────────────────────────────
 header "📁 PHASE 2 — Project Structure"
 
-[[ -d "$WORKDIR/chroot" || -d "$WORKDIR/binary" ]] && {
+[[ -d "$WORKDIR/chroot" || -d "$WORKDIR/binary" || -d "$WORKDIR/config" ]] && {
     warn "Previous build found — cleaning..."
     lb clean --all 2>>"$LOG_FILE" || true
+    rm -rf "$WORKDIR/config" "$WORKDIR/auto"
 }
 
 mkdir -p config/{package-lists,hooks/live,hooks/normal}
 mkdir -p config/includes.chroot/{etc/cipheros,etc/calamares/branding/cipheros,etc/calamares/modules}
 mkdir -p config/includes.chroot/{usr/local/bin,usr/share/sddm/themes/cipheros}
-mkdir -p config/includes.chroot/{usr/share/plasma/look-and-feel/CipherOS/contents/defaults}
-mkdir -p config/includes.chroot/{usr/share/plasma/look-and-feel/CipherOS/contents/layouts}
-mkdir -p config/includes.chroot/{usr/share/plasma/look-and-feel/CipherOS/contents/splash}
+mkdir -p config/includes.chroot/usr/share/plasma/look-and-feel/CipherOS/contents
 mkdir -p config/includes.chroot/{usr/share/wallpapers/CipherOS/contents/images}
 mkdir -p config/includes.chroot/{usr/share/color-schemes,usr/share/konsole}
 mkdir -p config/includes.chroot/usr/share/plymouth/themes/cipheros
@@ -572,9 +571,10 @@ success "SDDM cyberpunk theme written"
 header "🖥️  PHASE 7 — KDE Plasma Look-and-Feel"
 
 LOOKANDFEEL="config/includes.chroot/usr/share/plasma/look-and-feel/CipherOS"
-mkdir -p "$LOOKANDFEEL/contents/defaults"
 mkdir -p "$LOOKANDFEEL/contents/layouts"
 mkdir -p "$LOOKANDFEEL/contents/splash"
+# contents/defaults must be a FILE, not a directory — remove if a stale dir exists
+[[ -d "$LOOKANDFEEL/contents/defaults" ]] && rm -rf "$LOOKANDFEEL/contents/defaults"
 
 cat > "$LOOKANDFEEL/metadata.json" << 'EOF'
 {
