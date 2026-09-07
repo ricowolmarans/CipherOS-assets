@@ -99,7 +99,7 @@ lb config noauto \
     --mirror-binary http://deb.debian.org/debian/ \
     --mirror-binary-security http://security.debian.org/debian-security/ \
     --security true \
-    --backports true \
+    --backports false \
     --bootloader grub-efi \
     --binary-images iso-hybrid \
     --iso-volume "CipherOS 1.0" \
