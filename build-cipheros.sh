@@ -361,6 +361,7 @@ success "Package lists written"
 header "🔒 PHASE 6 — SDDM Cyberpunk Login Screen"
 
 SDDM_DIR="config/includes.chroot/usr/share/sddm/themes/cipheros"
+mkdir -p "$SDDM_DIR"
 
 cat > "$SDDM_DIR/metadata.desktop" << 'EOF'
 [SddmGreeterTheme]
@@ -571,6 +572,9 @@ success "SDDM cyberpunk theme written"
 header "🖥️  PHASE 7 — KDE Plasma Look-and-Feel"
 
 LOOKANDFEEL="config/includes.chroot/usr/share/plasma/look-and-feel/CipherOS"
+mkdir -p "$LOOKANDFEEL/contents/defaults"
+mkdir -p "$LOOKANDFEEL/contents/layouts"
+mkdir -p "$LOOKANDFEEL/contents/splash"
 
 cat > "$LOOKANDFEEL/metadata.json" << 'EOF'
 {
@@ -747,6 +751,8 @@ success "KDE Plasma theming written"
 header "🧩 PHASE 8 — Calamares Installer"
 
 CAL_DIR="config/includes.chroot/etc/calamares"
+mkdir -p "$CAL_DIR/branding/cipheros"
+mkdir -p "$CAL_DIR/modules"
 
 cat > "$CAL_DIR/settings.conf" << 'EOF'
 ---
@@ -976,6 +982,7 @@ success "Calamares installer configured"
 header "🌊 PHASE 9 — Plymouth Animated Boot Splash"
 
 PLYMOUTH_DIR="config/includes.chroot/usr/share/plymouth/themes/cipheros"
+mkdir -p "$PLYMOUTH_DIR"
 
 cat > "$PLYMOUTH_DIR/cipheros.plymouth" << 'EOF'
 [Plymouth Theme]
@@ -1149,6 +1156,7 @@ success "Powerlevel10k config written"
 header "🪟 PHASE 11 — Kvantum Window Theming"
 
 KVANTUM_DIR="config/includes.chroot/usr/share/Kvantum/CipherOS"
+mkdir -p "$KVANTUM_DIR"
 
 cat > "$KVANTUM_DIR/CipherOS.kvconfig" << 'EOF'
 [%General]
@@ -1253,6 +1261,7 @@ success "Kvantum theme written"
 header "💻 PHASE 12 — Konsole Terminal Profile"
 
 KONSOLE_DIR="config/includes.chroot/usr/share/konsole"
+mkdir -p "$KONSOLE_DIR"
 
 cat > "$KONSOLE_DIR/CipherOS.colorscheme" << 'EOF'
 [Background]
